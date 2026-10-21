@@ -8,6 +8,24 @@
       name="description"
       content="Portfolio of Marllord R. Regoroso, a web developer working on both frontend and backend, and a 4th-year student at Pateros Technological College."
     />
+    <link rel="canonical" href="https://marlrdr.github.io/" />
+    <meta name="theme-color" content="#1c2a44" />
+
+    <!-- Icon sa browser tab at sa phone home screen -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <!-- Preview kapag shinare ang link (Messenger, Facebook, LinkedIn, Discord) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://marlrdr.github.io/" />
+    <meta property="og:site_name" content="Marllord R. Regoroso" />
+    <meta property="og:title" content="Marllord R. Regoroso — Portfolio" />
+    <meta property="og:description" content="Web developer building frontend and backend web apps. 4th-year student at Pateros Technological College." />
+    <meta property="og:image" content="https://marlrdr.github.io/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Marllord R. Regoroso — Web developer portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script>
       document.documentElement.classList.add("js");
       // Always start at the top on load/reload instead of the old scroll spot
@@ -27,6 +45,8 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
       rel="stylesheet"
     />
+    <!-- Tech logos (Devicon icon library) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -69,12 +89,7 @@
         <h1>
           <span class="line"
             ><span class="name"
-              ><span class="chars">Marllord R. Regoroso</span
-              ><svg class="verified" viewBox="0 0 24 24" role="img" aria-label="Verified">
-                <title>Verified</title>
-                <path class="badge" d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12z" />
-                <path d="M7.4 12.4l3.1 3.1 6.1-6.2" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg></span
+              ><span class="chars">Marllord R. Regoroso</span></span
           ></span>
           <span class="line"><span><em>Web developer.</em></span></span>
         </h1>
@@ -117,8 +132,8 @@
       <div class="marquee" aria-hidden="true">
         <canvas class="stars"></canvas>
         <div class="track">
-          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span
-          ><span>Python</span><span>MySQL</span><span>Git</span><span>Docker</span
+          <span><i class="devicon-html5-plain" aria-hidden="true"></i>HTML</span><span><i class="devicon-css3-plain" aria-hidden="true"></i>CSS</span><span><i class="devicon-javascript-plain" aria-hidden="true"></i>JavaScript</span><span><i class="devicon-php-plain" aria-hidden="true"></i>PHP</span
+          ><span><i class="devicon-python-plain" aria-hidden="true"></i>Python</span><span><i class="devicon-mysql-plain" aria-hidden="true"></i>MySQL</span><span><i class="devicon-git-plain" aria-hidden="true"></i>Git</span><span><i class="devicon-docker-plain" aria-hidden="true"></i>Docker</span
           ><span>Home Assistant</span>
         </div>
       </div>
@@ -172,34 +187,34 @@
             <!-- Edit --level to change a percentage, --c to change the bar color -->
             <div class="skill-bars">
               <div class="bar" style="--level: 90; --c: #e4643f">
-                <div class="bar-top"><span>HTML <em>Frontend</em></span><span class="pct">90%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-html5-plain" aria-hidden="true"></i>HTML <em>Frontend</em></span><span class="pct">90%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 85; --c: #3d7be0">
-                <div class="bar-top"><span>CSS <em>Frontend</em></span><span class="pct">85%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-css3-plain" aria-hidden="true"></i>CSS <em>Frontend</em></span><span class="pct">85%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 80; --c: #e3a91f">
-                <div class="bar-top"><span>JavaScript <em>Frontend</em></span><span class="pct">80%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-javascript-plain" aria-hidden="true"></i>JavaScript <em>Frontend</em></span><span class="pct">80%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 75; --c: #7b6ee0">
-                <div class="bar-top"><span>PHP <em>Backend</em></span><span class="pct">75%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-php-plain" aria-hidden="true"></i>PHP <em>Backend</em></span><span class="pct">75%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 70; --c: #2fa37a">
-                <div class="bar-top"><span>Python <em>Backend</em></span><span class="pct">70%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-python-plain" aria-hidden="true"></i>Python <em>Backend</em></span><span class="pct">70%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 75; --c: #0f8fa8">
-                <div class="bar-top"><span>MySQL <em>Database</em></span><span class="pct">75%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-mysql-plain" aria-hidden="true"></i>MySQL <em>Database</em></span><span class="pct">75%</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
             </div>
             <h3 class="label skills-sub">Tools &amp; Systems</h3>
             <ul class="chips">
-              <li>Git &amp; GitHub</li>
-              <li>Docker</li>
+              <li><i class="devicon-git-plain" aria-hidden="true"></i>Git &amp; GitHub</li>
+              <li><i class="devicon-docker-plain" aria-hidden="true"></i>Docker</li>
               <li>Home Assistant</li>
               <li>Networking / DNS</li>
             </ul>
@@ -318,10 +333,30 @@
             <h2>Have something to build?</h2>
             <p>
               Whether it's a full web application or a single feature, frontend
-              or backend, I'm happy to talk it through. You can find my work and
-              reach me on GitHub.
+              or backend, I'm happy to talk it through. Reach me through any of
+              the links below.
             </p>
-            <a href="https://github.com/marlrdr" target="_blank" rel="noopener" class="email link">github.com/marlrdr <span class="arrow">↗</span></a>
+            <!--
+              EDIT: ilagay ang email at LinkedIn mo sa data-email at data-linkedin.
+              Kapag blangko (""), hindi lalabas ang row na iyon sa website.
+              Halimbawa:
+                data-email="marllord.dev@gmail.com"
+                data-linkedin="https://www.linkedin.com/in/marllord-regoroso"
+            -->
+            <ul
+              class="contact-links"
+              id="contactLinks"
+              data-email=""
+              data-linkedin=""
+            >
+              <li>
+                <a class="c-item" href="https://github.com/marlrdr" target="_blank" rel="noopener">
+                  <span class="label c-k">GitHub</span>
+                  <span class="c-v">github.com/marlrdr</span>
+                  <span class="arrow">↗</span>
+                </a>
+              </li>
+            </ul>
           </div>
 
           <!-- Robot: eyes follow the mouse, blinks and waves -->
@@ -371,6 +406,68 @@
 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Contact rows: email and LinkedIn come from data-email / data-linkedin
+      // on #contactLinks. A blank value means that row is not shown.
+      (function buildContacts() {
+        const list = document.getElementById("contactLinks");
+        const email = (list.dataset.email || "").trim();
+        const linkedin = (list.dataset.linkedin || "").trim();
+        const first = list.firstElementChild;
+        const row = (label, value, href, external) => {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.className = "c-item";
+          a.href = href;
+          if (external) {
+            a.target = "_blank";
+            a.rel = "noopener";
+          }
+          a.innerHTML = '<span class="label c-k"></span><span class="c-v"></span><span class="arrow">↗</span>';
+          a.querySelector(".c-k").textContent = label;
+          a.querySelector(".c-v").textContent = value;
+          li.append(a);
+          list.insertBefore(li, first);
+          return li;
+        };
+        if (email) {
+          const li = row("Email", email, "mailto:" + email, false);
+          li.classList.add("has-copy");
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "copy-btn";
+          btn.textContent = "Copy";
+          btn.setAttribute("aria-label", "Copy email address");
+          btn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(email);
+            } catch (e) {
+              const t = document.createElement("textarea");
+              t.value = email;
+              document.body.append(t);
+              t.select();
+              document.execCommand("copy");
+              t.remove();
+            }
+            btn.textContent = "Copied ✓";
+            btn.classList.remove("done");
+            void btn.offsetWidth; // restart the pop animation
+            btn.classList.add("done");
+            clearTimeout(btn._t);
+            btn._t = setTimeout(() => {
+              btn.textContent = "Copy";
+              btn.classList.remove("done");
+            }, 1800);
+          });
+          li.append(btn);
+        }
+        if (linkedin) {
+          const shown = linkedin.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+          // LinkedIn goes after Email but before GitHub
+          const li = row("LinkedIn", shown, linkedin, true);
+          list.insertBefore(li, first);
+        }
+      })();
 
       // Mobile menu
       const menuBtn = document.getElementById("menuBtn");
@@ -446,7 +543,8 @@
         ".skill-bars .bar",
         ".chips li",
         ".rows .row",
-        ".contact-text > *",
+        ".contact-text > :not(.contact-links)",
+        ".contact-links li",
         ".robot",
       ];
       groups.forEach((sel) => {
@@ -554,9 +652,18 @@
       // Loading screen: counts to 100, then slides up to reveal the page
       const loader = document.getElementById("loader");
       const toTop = () => scrollTo({ top: 0, left: 0, behavior: "instant" });
-      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      // A shared link like marlrdr.github.io/#projects: start at the top while
+      // the page loads, then glide down to that section.
+      let startTarget = null;
+      try {
+        if (location.hash) startTarget = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      } catch (e) {}
       toTop();
       addEventListener("load", toTop);
+      const pageLoaded =
+        document.readyState === "complete"
+          ? Promise.resolve()
+          : new Promise((r) => addEventListener("load", r, { once: true }));
       const loaderDone = new Promise((resolve) => {
         const root = document.documentElement;
         if (!root.classList.contains("loading")) {
@@ -589,6 +696,13 @@
             });
           }, 250);
         })(start);
+      });
+      Promise.all([loaderDone, pageLoaded]).then(() => {
+        if (!startTarget) return;
+        setTimeout(
+          () => startTarget.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }),
+          reduceMotion ? 0 : 300,
+        );
       });
 
       // Galaxy: twinkling stars with the odd shooting star, drawn on canvas.
@@ -632,6 +746,7 @@
           draw(performance.now());
         }
         function draw(t) {
+          if (!w || !h) return; // canvas not laid out yet (e.g. hidden)
           ctx.clearRect(0, 0, w, h);
           ctx.drawImage(base, 0, 0, w, h);
           let tint = "";

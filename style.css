@@ -1079,6 +1079,80 @@ header.hide {
     transform: translateX(100%);
   }
 }
+
+/* ---------- TECH LOGOS ---------- */
+/* Skill bars: logo in a small tile tinted with the bar color (--c) */
+.bar-top {
+  align-items: center;
+}
+.bar-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.bar-name em {
+  margin-left: 0;
+}
+.sk-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 28%, transparent);
+  transition:
+    transform 0.6s cubic-bezier(0.3, 1.5, 0.5, 1),
+    opacity 0.5s var(--ease);
+  transition-delay: calc(var(--d, 0ms) + 0.15s);
+}
+/* Pops in as the bar scrolls into view */
+.js .bar:not(.in) .sk-ico {
+  opacity: 0;
+  transform: scale(0.5) rotate(-20deg);
+}
+/* Small playful tilt on hover */
+.bar:hover .sk-ico {
+  transform: rotate(-8deg) scale(1.1);
+  transition-delay: 0s;
+}
+
+/* Tools chips */
+.chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.chips li i {
+  font-size: 1.05rem;
+  color: var(--muted);
+  transition:
+    color 0.25s,
+    transform 0.35s var(--ease);
+}
+.chips li:hover i {
+  color: var(--accent-text);
+  transform: rotate(-10deg) scale(1.15);
+}
+
+/* Moving tech strip */
+.marquee span i {
+  font-style: normal;
+  font-size: 0.85em;
+  margin-right: 14px;
+  color: var(--ink-accent);
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-ico,
+  .chips li i {
+    transition: none;
+  }
+}
 .chips {
   list-style: none;
   display: flex;
@@ -1235,27 +1309,136 @@ header.hide {
   }
 }
 
-/* ---------- VERIFIED BADGE ---------- */
+/* Hero name: letters animate one by one (see .chars), not the wrapper */
 .js .hero h1 .line > span.name {
   animation: none;
 }
-.verified {
-  display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
-  margin-left: 0.14em;
-  vertical-align: 0.05em;
+
+/* ---------- CONTACT LINKS ---------- */
+.contact-links {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  max-width: 540px;
 }
-.verified .badge {
-  fill: #3d7be0;
+.contact-links li {
+  position: relative;
 }
-.js .hero .verified {
-  animation: pop 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) 0.85s both;
+.c-item {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-text);
+  transition:
+    transform 0.4s var(--ease),
+    border-color 0.3s;
 }
-@keyframes pop {
+/* Soft glow that sweeps in from the left on hover */
+.c-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ink-accent) 16%, transparent),
+    transparent 85%
+  );
+  transform: translateX(-101%);
+  transition: transform 0.55s var(--ease);
+}
+.c-item:hover,
+.c-item:focus-visible {
+  transform: translateX(6px);
+  border-color: var(--ink-accent);
+}
+.c-item:hover::before,
+.c-item:focus-visible::before {
+  transform: none;
+}
+#contact .c-k {
+  color: var(--ink-muted);
+}
+.c-v {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#contact .c-item .arrow {
+  color: var(--ink-accent);
+}
+.c-item:hover .arrow {
+  transform: translate(3px, -3px);
+}
+/* Email row: the copy button sits where the arrow would be */
+.has-copy .c-item {
+  padding-right: 112px;
+}
+.has-copy .c-item .arrow {
+  display: none;
+}
+.copy-btn {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  font: 500 0.78rem var(--mono);
+  color: var(--ink-text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+.copy-btn:hover {
+  border-color: var(--ink-accent);
+  color: var(--ink-accent);
+}
+.copy-btn.done {
+  background: var(--ink-accent);
+  border-color: var(--ink-accent);
+  color: var(--ink);
+  animation: copied 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes copied {
   from {
-    transform: scale(0) rotate(-90deg);
-    opacity: 0;
+    transform: translateY(-50%) scale(0.85);
+  }
+}
+@media (max-width: 520px) {
+  .c-item {
+    grid-template-columns: 1fr auto;
+    gap: 2px 12px;
+    padding: 14px 16px;
+  }
+  .c-k {
+    grid-column: 1 / -1;
+  }
+  .has-copy .c-item {
+    padding-right: 100px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-item,
+  .c-item::before,
+  .copy-btn.done {
+    transition: none;
+    animation: none;
   }
 }
 
