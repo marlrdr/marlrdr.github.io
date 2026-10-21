@@ -586,6 +586,8 @@
         const dpr = Math.min(devicePixelRatio || 1, 1.5);
         const tints = ["#ffffff", "#ffffff", "#ffffff", "#9ec5ff", "#c8b8ff", "#ff9874"];
         let w = 0, h = 0, stars = [], shooting = null, onScreen = true, running = false, last = 0;
+        const base = document.createElement("canvas");
+        const baseCtx = base.getContext("2d");
 
         function resize() {
           w = canvas.clientWidth;
@@ -601,10 +603,25 @@
             speed: Math.random() * 0.0015 + 0.0005,
             tint: tints[Math.floor(Math.random() * tints.length)],
           })).sort((a, b) => (a.tint < b.tint ? -1 : 1)); // fewer color switches
+
+          // Most stars are drawn once into a cached layer; ~1 in 5 twinkle live
+          base.width = canvas.width;
+          base.height = canvas.height;
+          baseCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const still = [];
+          const twinkling = [];
+          stars.forEach((s, i) => (i % 5 === 0 ? twinkling : still).push(s));
+          for (const s of still) {
+            baseCtx.fillStyle = s.tint;
+            baseCtx.globalAlpha = 0.25 + Math.random() * 0.55;
+            baseCtx.fillRect(s.x, s.y, s.r * 1.6, s.r * 1.6);
+          }
+          stars = twinkling;
           draw(performance.now());
         }
         function draw(t) {
           ctx.clearRect(0, 0, w, h);
+          ctx.drawImage(base, 0, 0, w, h);
           let tint = "";
           for (const s of stars) {
             const glow = reduceMotion ? 0.7 : 0.5 + 0.5 * Math.sin(t * s.speed + s.phase);
@@ -663,6 +680,16 @@
       themeBtn.addEventListener("click", () => startPageStars());
       document.querySelectorAll(".stars:not(.page-stars)").forEach((c) => starfield(c));
 
+      // Pause looping animations in sections that are off screen
+      const animIo = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => e.target.classList.toggle("anim-off", !e.isIntersecting)),
+        { rootMargin: "120px 0px" },
+      );
+      document
+        .querySelectorAll(".hero, .marquee, #about, #skills, #projects, #contact")
+        .forEach((el) => animIo.observe(el));
+
       // Live code window: types each snippet with syntax colors, then loops.
       // Token types: k keyword, s string, v variable, f function,
       // p property, n number, c comment, "" plain text.
@@ -709,6 +736,12 @@
         codeBody.append(codeLine);
         codeLine.append(caret);
       }
+      const codeBox = document.querySelector(".code");
+      let codeVisible = true;
+      new IntersectionObserver(([e]) => (codeVisible = e.isIntersecting)).observe(codeBox);
+      const whenVisible = async () => {
+        while (!codeVisible || document.hidden) await wait(400);
+      };
       async function typeSnippet(snippet, instant) {
         codeBody.textContent = "";
         codeFile.textContent = snippet.file;
@@ -737,6 +770,7 @@
         await loaderDone;
         await wait(900);
         for (let i = 0; ; i = (i + 1) % snippets.length) {
+          await whenVisible();
           await typeSnippet(snippets[i]);
           await wait(3800);
           codeBody.classList.add("clearing");
