@@ -522,13 +522,25 @@
         portrait.addEventListener("pointerleave", () => {
           portrait.style.transform = "";
         });
+        let eyeRect = null, eyeX = 0, eyeY = 0, eyeQueued = false;
+        const forgetEyes = () => (eyeRect = null);
+        addEventListener("scroll", forgetEyes, { passive: true });
+        addEventListener("resize", forgetEyes);
         addEventListener("pointermove", (e) => {
-          const r = robotEyes.getBoundingClientRect();
-          const dx = e.clientX - (r.left + r.width / 2);
-          const dy = e.clientY - (r.top + r.height / 2);
-          const dist = Math.hypot(dx, dy) || 1;
-          const pull = Math.min(1, dist / 300);
-          robotEyes.style.transform = `translate(${(dx / dist) * 7 * pull}px, ${(dy / dist) * 6 * pull}px)`;
+          eyeX = e.clientX;
+          eyeY = e.clientY;
+          if (eyeQueued) return;
+          eyeQueued = true;
+          requestAnimationFrame(() => {
+            eyeQueued = false;
+            const r = eyeRect || (eyeRect = robotEyes.getBoundingClientRect());
+            if (r.bottom < 0 || r.top > innerHeight) return; // robot is off screen
+            const dx = eyeX - (r.left + r.width / 2);
+            const dy = eyeY - (r.top + r.height / 2);
+            const dist = Math.hypot(dx, dy) || 1;
+            const pull = Math.min(1, dist / 300);
+            robotEyes.style.transform = `translate(${(dx / dist) * 7 * pull}px, ${(dy / dist) * 6 * pull}px)`;
+          });
         });
       }
 
@@ -545,12 +557,12 @@
         } catch (e) {}
         const num = document.getElementById("loaderNum");
         const bar = document.getElementById("loaderBar");
-        const duration = reduceMotion ? 300 : 1800;
+        const duration = reduceMotion ? 300 : 1400;
         const start = performance.now();
         let loaded = document.readyState === "complete";
         addEventListener("load", () => (loaded = true));
         (function tick(now) {
-          if (now - start > 5000) loaded = true; // never wait forever
+          if (now - start > 3000) loaded = true; // never wait forever
           const t = Math.min(1, Math.max(0, now - start) / duration);
           const v = Math.round((1 - Math.pow(1 - t, 3)) * (loaded ? 100 : 99));
           num.textContent = v;
@@ -571,9 +583,9 @@
       // The full-page layer only draws in dark mode.
       function starfield(canvas, active = () => true) {
         const ctx = canvas.getContext("2d");
-        const dpr = Math.min(devicePixelRatio || 1, 2);
-        const tints = ["255,255,255", "255,255,255", "255,255,255", "158,197,255", "200,184,255", "255,152,116"];
-        let w = 0, h = 0, stars = [], shooting = null, onScreen = true, running = false;
+        const dpr = Math.min(devicePixelRatio || 1, 1.5);
+        const tints = ["#ffffff", "#ffffff", "#ffffff", "#9ec5ff", "#c8b8ff", "#ff9874"];
+        let w = 0, h = 0, stars = [], shooting = null, onScreen = true, running = false, last = 0;
 
         function resize() {
           w = canvas.clientWidth;
@@ -581,32 +593,33 @@
           canvas.width = w * dpr;
           canvas.height = h * dpr;
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          stars = Array.from({ length: Math.round((w * h) / 4200) }, () => ({
+          stars = Array.from({ length: Math.min(260, Math.round((w * h) / 7000)) }, () => ({
             x: Math.random() * w,
             y: Math.random() * h,
             r: Math.random() * 1.2 + 0.3,
             phase: Math.random() * Math.PI * 2,
             speed: Math.random() * 0.0015 + 0.0005,
             tint: tints[Math.floor(Math.random() * tints.length)],
-          }));
+          })).sort((a, b) => (a.tint < b.tint ? -1 : 1)); // fewer color switches
           draw(performance.now());
         }
         function draw(t) {
           ctx.clearRect(0, 0, w, h);
+          let tint = "";
           for (const s of stars) {
             const glow = reduceMotion ? 0.7 : 0.5 + 0.5 * Math.sin(t * s.speed + s.phase);
-            ctx.fillStyle = `rgba(${s.tint},${0.2 + 0.7 * glow})`;
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fill();
+            if (s.tint !== tint) ctx.fillStyle = tint = s.tint;
+            ctx.globalAlpha = 0.2 + 0.7 * glow;
+            ctx.fillRect(s.x, s.y, s.r * 1.6, s.r * 1.6);
           }
+          ctx.globalAlpha = 1;
           if (reduceMotion) return;
-          if (!shooting && Math.random() < 0.004) {
+          if (!shooting && Math.random() < 0.006) {
             shooting = { x: Math.random() * w * 0.7, y: Math.random() * h * 0.4, life: 0 };
           }
           if (shooting) {
             shooting.life += 1;
-            const p = shooting.life / 45;
+            const p = shooting.life / 24;
             const x = shooting.x + p * 260, y = shooting.y + p * 110;
             const g = ctx.createLinearGradient(x - 90, y - 38, x, y);
             g.addColorStop(0, "rgba(255,255,255,0)");
@@ -625,7 +638,11 @@
             running = false;
             return;
           }
-          draw(t);
+          if (t - last > 33) {
+            // ~30fps is plenty for twinkling
+            last = t;
+            draw(t);
+          }
           requestAnimationFrame(loop);
         }
         function start() {
@@ -739,11 +756,15 @@
         document.body.append(dot, ring);
         root.classList.add("has-cursor");
 
-        let mx = 0, my = 0, rx = 0, ry = 0, shown = false;
+        let mx = 0, my = 0, rx = 0, ry = 0, shown = false, following = false;
         addEventListener("pointermove", (e) => {
           mx = e.clientX;
           my = e.clientY;
           dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+          if (!following) {
+            following = true;
+            requestAnimationFrame(follow);
+          }
           if (!shown) {
             rx = mx;
             ry = my;
@@ -765,12 +786,13 @@
         addEventListener("pointerdown", () => ring.classList.add("down"));
         addEventListener("pointerup", () => ring.classList.remove("down"));
 
-        (function follow() {
-          rx += (mx - rx) * 0.18;
-          ry += (my - ry) * 0.18;
+        function follow() {
+          rx += (mx - rx) * 0.2;
+          ry += (my - ry) * 0.2;
           ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-          requestAnimationFrame(follow);
-        })();
+          if (Math.abs(mx - rx) + Math.abs(my - ry) > 0.3) requestAnimationFrame(follow);
+          else following = false;
+        }
       }
 
       // Progress bar, header (hides on scroll down), hero parallax
