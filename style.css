@@ -1120,6 +1120,28 @@ header.hide {
   transition-delay: 0s;
 }
 
+/* Level label (Advanced / Intermediate) instead of a percentage */
+.lvl {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+  transition-delay: calc(var(--d, 0ms) + 0.9s);
+}
+.js .bar:not(.in) .lvl {
+  opacity: 0;
+  transform: translateX(8px);
+}
+
 /* Tools chips */
 .chips li {
   display: inline-flex;
@@ -1149,6 +1171,7 @@ header.hide {
 
 @media (prefers-reduced-motion: reduce) {
   .sk-ico,
+  .lvl,
   .chips li i {
     transition: none;
   }

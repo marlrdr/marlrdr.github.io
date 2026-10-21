@@ -184,30 +184,30 @@
           </div>
           <div>
             <h3 class="label skills-sub">Languages &amp; Database</h3>
-            <!-- Edit --level to change a percentage, --c to change the bar color -->
+            <!-- Edit --level for the bar length, --c for the color, and the .lvl text (Advanced / Intermediate / Beginner) -->
             <div class="skill-bars">
               <div class="bar" style="--level: 90; --c: #e4643f">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-html5-plain" aria-hidden="true"></i>HTML <em>Frontend</em></span><span class="pct">90%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-html5-plain" aria-hidden="true"></i>HTML <em>Frontend</em></span><span class="lvl">Advanced</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 85; --c: #3d7be0">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-css3-plain" aria-hidden="true"></i>CSS <em>Frontend</em></span><span class="pct">85%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-css3-plain" aria-hidden="true"></i>CSS <em>Frontend</em></span><span class="lvl">Advanced</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 80; --c: #e3a91f">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-javascript-plain" aria-hidden="true"></i>JavaScript <em>Frontend</em></span><span class="pct">80%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-javascript-plain" aria-hidden="true"></i>JavaScript <em>Frontend</em></span><span class="lvl">Advanced</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 75; --c: #7b6ee0">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-php-plain" aria-hidden="true"></i>PHP <em>Backend</em></span><span class="pct">75%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-php-plain" aria-hidden="true"></i>PHP <em>Backend</em></span><span class="lvl">Intermediate</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 70; --c: #2fa37a">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-python-plain" aria-hidden="true"></i>Python <em>Backend</em></span><span class="pct">70%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-python-plain" aria-hidden="true"></i>Python <em>Backend</em></span><span class="lvl">Intermediate</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
               <div class="bar" style="--level: 75; --c: #0f8fa8">
-                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-mysql-plain" aria-hidden="true"></i>MySQL <em>Database</em></span><span class="pct">75%</span></div>
+                <div class="bar-top"><span class="bar-name"><i class="sk-ico devicon-mysql-plain" aria-hidden="true"></i>MySQL <em>Database</em></span><span class="lvl">Intermediate</span></div>
                 <div class="bar-track"><div class="fill"></div></div>
               </div>
             </div>
@@ -562,7 +562,6 @@
             if (!entry.isIntersecting) return;
             const el = entry.target;
             el.classList.add("in");
-            if (el.classList.contains("bar")) countUp(el);
             io.unobserve(el);
             // Drop the reveal timing afterwards so hover effects stay snappy
             el.addEventListener("transitionend", function done(ev) {
@@ -592,26 +591,6 @@
         { rootMargin: "-45% 0px -50% 0px" },
       );
       document.querySelectorAll("main section[id]").forEach((s) => navIo.observe(s));
-
-      // Skill bar percentage counts up while the bar fills
-      document.querySelectorAll(".bar .pct").forEach((pct) => {
-        pct.dataset.level = parseInt(pct.textContent, 10);
-        pct.textContent = "0%";
-      });
-      function countUp(bar) {
-        const pct = bar.querySelector(".pct");
-        const target = Number(pct.dataset.level);
-        const delay = parseInt(bar.style.getPropertyValue("--d"), 10) || 0;
-        const duration = reduceMotion ? 1 : 1600;
-        setTimeout(() => {
-          const start = performance.now();
-          (function step(now) {
-            const t = Math.min(1, Math.max(0, now - start) / duration);
-            pct.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target) + "%";
-            if (t < 1) requestAnimationFrame(step);
-          })(start);
-        }, reduceMotion ? 0 : delay + 200);
-      }
 
       // Floating portrait tilts toward the mouse; robot eyes follow it
       const portrait = document.getElementById("portrait");
