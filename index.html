@@ -10,6 +10,8 @@
     />
     <script>
       document.documentElement.classList.add("js");
+      // Always start at the top on load/reload instead of the old scroll spot
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       // Loading screen only on the first visit of a browser session
       try {
         document.documentElement.classList.add(
@@ -551,6 +553,10 @@
 
       // Loading screen: counts to 100, then slides up to reveal the page
       const loader = document.getElementById("loader");
+      const toTop = () => scrollTo({ top: 0, left: 0, behavior: "instant" });
+      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      toTop();
+      addEventListener("load", toTop);
       const loaderDone = new Promise((resolve) => {
         const root = document.documentElement;
         if (!root.classList.contains("loading")) {
@@ -575,6 +581,7 @@
           if (t < 1 || !loaded) return requestAnimationFrame(tick);
           setTimeout(() => {
             loader.classList.add("done");
+            toTop();
             root.classList.remove("loading");
             resolve();
             loader.addEventListener("transitionend", (ev) => {
